@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
   <title>Cardápio · Pedaço Paulista</title>
   <link rel="icon" href="./assets/logo-pedaco-circle.png" />
   <style>
@@ -15,736 +15,401 @@
       --line: #D8E3DD;
       --surface: #FFFFFF;
       --bg: #F2F5F3;
-      --top-h: 56px;
     }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
+      background: #dde5e1;
       color: var(--ink);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       -webkit-text-size-adjust: 100%;
     }
+    /* Coluna estilo celular — evita “tudo zoado” no PC */
+    .app {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--bg);
+      box-shadow: 0 0 40px rgba(0,0,0,.12);
+      position: relative;
+    }
     .top {
       position: sticky;
       top: 0;
-      z-index: 30;
+      z-index: 20;
       display: flex;
       align-items: center;
       gap: 8px;
-      min-height: var(--top-h);
-      padding: 8px 10px;
-      padding-top: max(8px, env(safe-area-inset-top));
+      padding: 10px;
+      padding-top: max(10px, env(safe-area-inset-top));
       background: var(--brand-deep);
       color: #fff;
     }
     .top img {
-      width: 36px;
-      height: 36px;
-      border-radius: 18px;
-      object-fit: cover;
-      border: 1.5px solid #fff;
-      background: #fff;
-      flex: 0 0 auto;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid #fff; object-fit: cover; background: #fff;
     }
-    .top-grow { flex: 1; min-width: 0; }
-    .top h1 {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 800;
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .top .grow { flex: 1; min-width: 0; }
+    .top h1 { font-size: 15px; font-weight: 800; line-height: 1.2; }
+    .top p { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.75); margin-top: 1px; }
+    .top button {
+      border: 0; background: transparent; color: #fff;
+      width: 36px; height: 36px; font-size: 18px; cursor: pointer;
     }
-    .top p {
-      margin: 1px 0 0;
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.75);
-    }
-    .search-btn {
-      border: 0;
-      background: transparent;
-      color: #fff;
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      flex: 0 0 auto;
-    }
-    main {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 10px 16px calc(24px + env(safe-area-inset-bottom));
-    }
+    .wrap { padding: 12px 16px 28px; padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
     .search {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 9px 14px;
-      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid var(--line); border-radius: 999px;
+      padding: 10px 14px; margin-bottom: 12px;
     }
     .search input {
-      flex: 1;
-      border: 0;
-      outline: none;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--ink);
-      background: transparent;
-      min-width: 0;
+      flex: 1; border: 0; outline: 0; background: transparent;
+      font-size: 15px; font-weight: 600; color: var(--ink); min-width: 0;
     }
     .cats {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 2px 0 8px;
-      margin-bottom: 2px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
+      display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px;
+      margin-bottom: 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
     }
     .cats::-webkit-scrollbar { display: none; }
     .cat {
-      flex: 0 0 auto;
-      width: 68px;
-      text-align: center;
-      cursor: pointer;
-      background: none;
-      border: 0;
-      padding: 0;
-      color: inherit;
+      flex: 0 0 68px; border: 0; background: none; padding: 0; cursor: pointer; text-align: center;
     }
-    .cat-circle {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 5px;
-      border-radius: 30px;
-      background: var(--brand-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border: 2px solid transparent;
-      font-size: 26px;
+    .cat .circle {
+      width: 60px; height: 60px; margin: 0 auto 5px; border-radius: 50%;
+      background: var(--brand-soft); border: 2px solid transparent; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; font-size: 26px;
     }
-    .cat.on .cat-circle { border-color: var(--brand); }
+    .cat.on .circle { border-color: var(--brand); }
     .cat img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .cat-label {
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--ink-soft);
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .cat span {
+      display: block; font-size: 11px; font-weight: 700; color: var(--ink-soft);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .cat.on .cat-label { color: var(--brand-deep); }
-    .section-title {
-      margin: 0 0 8px;
-      font-size: 17px;
-      font-weight: 800;
-      text-align: left;
+    .cat.on span { color: var(--brand-deep); }
+    .h2 { font-size: 17px; font-weight: 800; margin: 0 0 8px; text-align: left; }
+    .hi-track {
+      display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x;
     }
-    .hi-block { margin-bottom: 8px; }
-    .hi-wrap {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      touch-action: pan-x;
-      cursor: grab;
-    }
-    .hi-wrap.dragging { cursor: grabbing; }
-    .hi-wrap::-webkit-scrollbar { display: none; }
+    .hi-track::-webkit-scrollbar { display: none; }
     .hi {
-      flex: 0 0 100%;
-      scroll-snap-align: start;
-      background: var(--surface);
-      border-radius: 16px;
+      flex: 0 0 100%; scroll-snap-align: start;
+      background: #fff; border: 1px solid var(--line); border-radius: 16px;
+      overflow: hidden; cursor: pointer;
+    }
+    .hi-img {
+      width: 100%; height: 168px; background: #E8EEEA;
+      display: flex; align-items: center; justify-content: center; font-size: 48px;
       overflow: hidden;
-      border: 1px solid var(--line);
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
     }
-    .hi-media {
-      width: 100%;
-      height: 168px;
-      background: #E8EEEA;
-      overflow: hidden;
-      flex: 0 0 168px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      pointer-events: none;
+    .hi-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hi-txt { padding: 12px 14px; background: #fff; }
+    .hi-txt strong { display: block; font-size: 17px; margin-bottom: 4px; }
+    .hi-txt em {
+      display: block; font-style: normal; font-size: 13px; color: var(--ink-soft);
+      line-height: 1.35; margin-bottom: 6px; font-weight: 500;
     }
-    .hi-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .hi-body {
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      background: var(--surface);
-    }
-    .hi-name { margin: 0; font-size: 17px; font-weight: 800; }
-    .hi-desc {
-      margin: 0;
-      font-size: 13px;
-      color: var(--ink-soft);
-      line-height: 18px;
-      font-weight: 500;
-    }
-    .hi-price {
-      margin: 2px 0 0;
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--brand-deep);
-    }
-    .dots {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 8px;
-    }
+    .price { color: var(--brand-deep); font-weight: 800; font-size: 16px; }
+    .dots { display: flex; justify-content: center; gap: 6px; margin: 8px 0 4px; }
     .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 4px;
-      border: 0;
-      padding: 0;
-      background: var(--line);
-      cursor: pointer;
+      width: 7px; height: 7px; border-radius: 4px; border: 0; background: var(--line); cursor: pointer;
     }
-    .dot.on { background: var(--brand); width: 16px; }
-    .topic {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      /* compensa header sticky na âncora */
-      scroll-margin-top: calc(var(--top-h) + env(safe-area-inset-top) + 8px);
-      padding-top: 4px;
+    .dot.on { width: 16px; background: var(--brand); }
+    .sec {
+      margin-top: 10px;
+      scroll-margin-top: 70px;
     }
-    .topic-head {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-top: 10px;
-      border-top: 1px solid var(--line);
-    }
-    .topic-head h2 {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 800;
+    .sec-h {
+      display: flex; align-items: center; gap: 8px;
+      padding-top: 10px; margin-bottom: 8px; border-top: 1px solid var(--line);
+      font-size: 17px; font-weight: 800;
     }
     .row {
-      display: flex;
-      gap: 10px;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 10px;
-      cursor: pointer;
-      text-align: left;
-      width: 100%;
-      color: inherit;
-      font: inherit;
+      display: flex; gap: 10px; width: 100%;
+      background: #fff; border: 1px solid var(--line); border-radius: 14px;
+      padding: 10px; margin-bottom: 8px; cursor: pointer; text-align: left;
+      color: inherit; font: inherit;
     }
-    .row:active { opacity: 0.92; }
     .thumb {
-      width: 76px;
-      height: 76px;
-      border-radius: 12px;
-      background: #E8EEEA;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      flex: 0 0 76px;
-      font-size: 24px;
+      width: 76px; height: 76px; border-radius: 12px; background: #E8EEEA;
+      flex: 0 0 76px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
     }
-    .thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .row .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; justify-content: center; }
+    .row .body b { font-size: 15px; }
+    .row .body small {
+      font-size: 13px; color: var(--ink-soft); line-height: 1.3; font-weight: 500;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
-    .row-body {
-      min-width: 0;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      justify-content: center;
-    }
-    .row-name { margin: 0; font-size: 15px; font-weight: 800; }
-    .row-desc {
-      margin: 0;
-      font-size: 13px;
-      color: var(--ink-soft);
-      line-height: 17px;
-      font-weight: 500;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .row-desc.muted { font-size: 12px; font-style: italic; }
-    .row-price {
-      margin: 2px 0 0;
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--brand-deep);
-    }
-    .empty, .loading {
-      text-align: center;
-      color: var(--ink-soft);
-      font-weight: 600;
-      padding: 40px 12px;
-    }
-    /* Modal do item */
+    .row .body .price { font-size: 15px; margin-top: 2px; }
+    .empty { text-align: center; color: var(--ink-soft); font-weight: 600; padding: 40px 12px; }
     .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      background: rgba(0,0,0,0.45);
-      padding: 0;
+      position: fixed; inset: 0; z-index: 40; display: none;
+      align-items: flex-end; justify-content: center; background: rgba(0,0,0,.45);
     }
     .modal.on { display: flex; }
     .sheet {
-      width: 100%;
-      max-width: 480px;
-      max-height: min(88vh, 720px);
-      overflow: auto;
-      background: var(--surface);
-      border-radius: 20px 20px 0 0;
+      width: 100%; max-width: 430px; max-height: 88vh; overflow: auto;
+      background: #fff; border-radius: 20px 20px 0 0;
       padding-bottom: env(safe-area-inset-bottom);
     }
-    .sheet-media {
-      width: 100%;
-      height: 220px;
-      background: #E8EEEA;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
-      overflow: hidden;
+    .sheet-img {
+      height: 220px; background: #E8EEEA;
+      display: flex; align-items: center; justify-content: center; font-size: 64px; overflow: hidden;
     }
-    .sheet-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .sheet-body { padding: 16px 18px 20px; }
-    .sheet-body h3 {
-      margin: 0 0 6px;
-      font-size: 20px;
-      font-weight: 800;
-    }
-    .sheet-body .desc {
-      margin: 0 0 12px;
-      color: var(--ink-soft);
-      font-size: 14px;
-      line-height: 1.4;
-      font-weight: 500;
-    }
-    .sheet-body .price {
-      margin: 0 0 16px;
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--brand-deep);
-    }
-    .sheet-close {
-      width: 100%;
-      border: 0;
-      background: var(--brand);
-      color: #fff;
-      font-weight: 800;
-      font-size: 15px;
-      padding: 14px;
-      border-radius: 14px;
-      cursor: pointer;
+    .sheet-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sheet-pad { padding: 16px 18px 20px; }
+    .sheet-pad h3 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .sheet-pad p { font-size: 14px; color: var(--ink-soft); line-height: 1.4; margin-bottom: 12px; font-weight: 500; }
+    .sheet-pad .price { font-size: 20px; display: block; margin-bottom: 16px; }
+    .sheet-pad button {
+      width: 100%; border: 0; background: var(--brand); color: #fff;
+      font-weight: 800; font-size: 15px; padding: 14px; border-radius: 14px; cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header class="top">
-    <img src="./assets/logo-pedaco-circle.png" alt="Logo" />
-    <div class="top-grow">
-      <h1 id="storeName">Pedaço Paulista</h1>
-      <p>Cardápio online</p>
-    </div>
-    <button class="search-btn" id="focusSearch" type="button" aria-label="Buscar">⌕</button>
-  </header>
+  <div class="app">
+    <header class="top">
+      <img src="./assets/logo-pedaco-circle.png" alt="" />
+      <div class="grow">
+        <h1 id="storeName">Pedaço Paulista</h1>
+        <p>Cardápio online</p>
+      </div>
+      <button type="button" id="btnSearch" aria-label="Buscar">⌕</button>
+    </header>
 
-  <main>
-    <div class="search" id="searchBox">
-      <span aria-hidden="true">⌕</span>
-      <input id="q" type="search" placeholder="Buscar pratos, bebidas..." autocomplete="off" />
+    <div class="wrap">
+      <div class="search">
+        <span aria-hidden="true">⌕</span>
+        <input id="q" type="search" placeholder="Buscar pratos, bebidas..." autocomplete="off" />
+      </div>
+      <div id="root" class="empty">Carregando cardápio…</div>
     </div>
-    <div id="content" class="loading">Carregando cardápio…</div>
-  </main>
+  </div>
 
-  <div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal" id="modal">
     <div class="sheet" id="sheet"></div>
   </div>
 
   <script>
-    const API_BASE = 'https://defcom-production.up.railway.app'
-    const money = (n) =>
-      Number(n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-    const priceOf = (item) =>
-      item.promo && item.promoPrice != null ? item.promoPrice : item.price
-    const esc = (s) =>
-      String(s ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
+    const API = 'https://defcom-production.up.railway.app'
+    const $ = (id) => document.getElementById(id)
+    const money = (n) => Number(n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    const price = (i) => (i.promo && i.promoPrice != null ? i.promoPrice : i.price)
+    const esc = (s) => String(s ?? '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
 
-    const el = {
-      content: document.getElementById('content'),
-      storeName: document.getElementById('storeName'),
-      q: document.getElementById('q'),
-      focusSearch: document.getElementById('focusSearch'),
-      modal: document.getElementById('modal'),
-      sheet: document.getElementById('sheet'),
-    }
+    let cats = [], items = [], highlights = [], active = null, map = {}
+    let hiI = 0, hiTimer = null, hiPause = false
 
-    let categories = []
-    let items = []
-    let highlights = []
-    let activeCatId = null
-    let hiIndex = 0
-    let hiTimer = null
-    let hiPaused = false
-    const byId = {}
+    $('btnSearch').onclick = () => { $('q').focus() }
+    $('q').oninput = () => draw()
+    $('modal').onclick = (e) => { if (e.target === $('modal')) close() }
 
-    el.focusSearch.addEventListener('click', () => {
-      el.q.focus()
-      el.q.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-    })
-    el.q.addEventListener('input', () => render())
-    el.modal.addEventListener('click', (e) => {
-      if (e.target === el.modal) closeItem()
-    })
-
-    function catThumb(catId) {
-      const first = items.find((i) => i.categoryId === catId && i.imageUrl)
-      return first?.imageUrl || null
+    function thumb(catId) {
+      const x = items.find((i) => i.categoryId === catId && i.imageUrl)
+      return x ? x.imageUrl : null
     }
 
     function sections() {
-      const q = el.q.value.trim().toLowerCase()
+      const q = $('q').value.trim().toLowerCase()
       if (q) {
-        const matched = items.filter(
-          (i) =>
+        return [{
+          id: 'busca', name: 'Resultados', emoji: '🔎',
+          items: items.filter((i) =>
             i.name.toLowerCase().includes(q) ||
-            String(i.description || '').toLowerCase().includes(q),
-        )
-        return [{ id: 'busca', name: `Resultados · “${el.q.value.trim()}”`, emoji: '🔎', items: matched }]
+            String(i.description || '').toLowerCase().includes(q)),
+        }]
       }
-      return categories
+      return cats
         .map((c) => ({ ...c, items: items.filter((i) => i.categoryId === c.id) }))
-        .filter((s) => s.items.length > 0)
+        .filter((s) => s.items.length)
     }
 
-    function scrollToCat(id) {
-      activeCatId = id
-      el.q.value = ''
-      render()
+    function open(id) {
+      const i = map[id]
+      if (!i) return
+      $('sheet').innerHTML =
+        `<div class="sheet-img">${i.imageUrl ? `<img src="${esc(i.imageUrl)}" alt="">` : '🍽️'}</div>
+         <div class="sheet-pad">
+           <h3>${esc(i.name)}</h3>
+           <p>${esc(i.description || 'Sem descrição cadastrada')}</p>
+           <span class="price">${money(price(i))}</span>
+           <button type="button" id="closeBtn">Fechar</button>
+         </div>`
+      $('modal').classList.add('on')
+      $('closeBtn').onclick = close
+    }
+    function close() { $('modal').classList.remove('on'); $('sheet').innerHTML = '' }
+
+    function goCat(id) {
+      active = id
+      $('q').value = ''
+      draw()
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const node = document.getElementById('sec-' + id)
-          if (!node) return
-          const top = document.querySelector('.top')
-          const offset = (top?.getBoundingClientRect().height || 56) + 8
-          const y = node.getBoundingClientRect().top + window.scrollY - offset
-          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
-        })
+        const el = document.getElementById('sec-' + id)
+        if (!el) return
+        const top = document.querySelector('.top')
+        const off = (top ? top.getBoundingClientRect().height : 56) + 8
+        const y = el.getBoundingClientRect().top + window.scrollY - off
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
       })
     }
 
-    function openItem(id) {
-      const item = byId[id]
-      if (!item) return
-      el.sheet.innerHTML = `
-        <div class="sheet-media">${
-          item.imageUrl
-            ? `<img src="${esc(item.imageUrl)}" alt="" />`
-            : '🍽️'
-        }</div>
-        <div class="sheet-body">
-          <h3>${esc(item.name)}</h3>
-          <p class="desc">${esc(item.description || 'Sem descrição cadastrada')}</p>
-          <p class="price">${money(priceOf(item))}</p>
-          <button type="button" class="sheet-close" id="sheetClose">Fechar</button>
-        </div>`
-      el.modal.classList.add('on')
-      document.getElementById('sheetClose')?.addEventListener('click', closeItem)
-    }
-
-    function closeItem() {
-      el.modal.classList.remove('on')
-      el.sheet.innerHTML = ''
-    }
-
-    function goHi(index, animated = true) {
-      const wrap = document.getElementById('hiWrap')
-      if (!wrap) return
-      const cards = wrap.querySelectorAll('.hi')
+    function goHi(n, anim) {
+      const track = $('hiTrack')
+      if (!track) return
+      const cards = track.querySelectorAll('.hi')
       if (!cards.length) return
-      const n = cards.length
-      const next = ((index % n) + n) % n
-      hiIndex = next
-      wrap.scrollTo({
-        left: cards[next].offsetLeft,
-        behavior: animated ? 'smooth' : 'auto',
-      })
-      document.querySelectorAll('#hiDots .dot').forEach((d, i) => {
-        d.classList.toggle('on', i === next)
-      })
+      hiI = ((n % cards.length) + cards.length) % cards.length
+      track.scrollTo({ left: cards[hiI].offsetLeft, behavior: anim === false ? 'auto' : 'smooth' })
+      document.querySelectorAll('#hiDots .dot').forEach((d, i) => d.classList.toggle('on', i === hiI))
     }
 
-    function bindHiCarousel(count) {
-      const wrap = document.getElementById('hiWrap')
-      const dots = document.getElementById('hiDots')
-      if (!wrap) return
-      if (hiTimer) {
-        clearInterval(hiTimer)
-        hiTimer = null
+    function bindHi(n) {
+      const track = $('hiTrack')
+      if (!track) return
+      if (hiTimer) clearInterval(hiTimer)
+      let down = false, x0 = 0, left0 = 0, moved = false
+      track.onpointerdown = (e) => {
+        down = true; moved = false; hiPause = true
+        x0 = e.clientX; left0 = track.scrollLeft
+        track.setPointerCapture(e.pointerId)
       }
-
-      let down = false
-      let startX = 0
-      let startLeft = 0
-      let moved = false
-      wrap.addEventListener('pointerdown', (e) => {
-        down = true
-        moved = false
-        hiPaused = true
-        startX = e.clientX
-        startLeft = wrap.scrollLeft
-        wrap.classList.add('dragging')
-        wrap.setPointerCapture(e.pointerId)
-      })
-      wrap.addEventListener('pointermove', (e) => {
+      track.onpointermove = (e) => {
         if (!down) return
-        const dx = e.clientX - startX
+        const dx = e.clientX - x0
         if (Math.abs(dx) > 6) moved = true
-        wrap.scrollLeft = startLeft - dx
-      })
-      const endDrag = () => {
+        track.scrollLeft = left0 - dx
+      }
+      const end = () => {
         if (!down) return
-        down = false
-        wrap.classList.remove('dragging')
-        hiPaused = false
-        const cards = [...wrap.querySelectorAll('.hi')]
-        let best = 0
-        let bestDist = Infinity
-        cards.forEach((card, i) => {
-          const dist = Math.abs(card.offsetLeft - wrap.scrollLeft)
-          if (dist < bestDist) {
-            bestDist = dist
-            best = i
-          }
+        down = false; hiPause = false
+        track.dataset.moved = moved ? '1' : '0'
+        const cards = [...track.querySelectorAll('.hi')]
+        let best = 0, dist = Infinity
+        cards.forEach((c, i) => {
+          const d = Math.abs(c.offsetLeft - track.scrollLeft)
+          if (d < dist) { dist = d; best = i }
         })
         goHi(best)
-        wrap.dataset.moved = moved ? '1' : '0'
       }
-      wrap.addEventListener('pointerup', endDrag)
-      wrap.addEventListener('pointercancel', endDrag)
-
-      wrap.addEventListener(
-        'scroll',
-        () => {
-          const cards = [...wrap.querySelectorAll('.hi')]
-          let best = 0
-          let bestDist = Infinity
-          cards.forEach((card, i) => {
-            const dist = Math.abs(card.offsetLeft - wrap.scrollLeft)
-            if (dist < bestDist) {
-              bestDist = dist
-              best = i
-            }
-          })
-          if (best !== hiIndex) {
-            hiIndex = best
-            document.querySelectorAll('#hiDots .dot').forEach((d, i) => {
-              d.classList.toggle('on', i === best)
-            })
-          }
-        },
-        { passive: true },
-      )
-
-      dots?.querySelectorAll('.dot').forEach((d) => {
-        d.addEventListener('click', () => {
-          hiPaused = true
-          goHi(Number(d.getAttribute('data-i')))
-          setTimeout(() => {
-            hiPaused = false
-          }, 500)
+      track.onpointerup = end
+      track.onpointercancel = end
+      track.onscroll = () => {
+        const cards = [...track.querySelectorAll('.hi')]
+        let best = 0, dist = Infinity
+        cards.forEach((c, i) => {
+          const d = Math.abs(c.offsetLeft - track.scrollLeft)
+          if (d < dist) { dist = d; best = i }
         })
-      })
-
-      if (count > 1) {
-        hiTimer = setInterval(() => {
-          if (hiPaused) return
-          goHi(hiIndex + 1)
-        }, 3800)
+        if (best !== hiI) {
+          hiI = best
+          document.querySelectorAll('#hiDots .dot').forEach((d, i) => d.classList.toggle('on', i === hiI))
+        }
       }
+      document.querySelectorAll('#hiDots .dot').forEach((d) => {
+        d.onclick = () => { hiPause = true; goHi(+d.dataset.i); setTimeout(() => hiPause = false, 400) }
+      })
+      if (n > 1) hiTimer = setInterval(() => { if (!hiPause) goHi(hiI + 1) }, 3800)
     }
 
-    function render() {
+    function draw() {
+      const root = $('root')
       if (!items.length) {
-        el.content.innerHTML = '<p class="empty">Nenhum item no cardápio ainda.</p>'
+        root.innerHTML = '<p class="empty">Nenhum item no cardápio ainda.</p>'
         return
       }
-
-      const q = el.q.value.trim()
-      const featured = highlights.length
-        ? highlights
-        : items.filter((i) => i.highlight).slice(0, 6)
+      const q = $('q').value.trim()
+      const feat = highlights.length ? highlights : items.filter((i) => i.highlight).slice(0, 6)
       const secs = sections()
       let html = ''
 
       if (!q) {
         html += '<div class="cats">'
-        for (const c of categories) {
-          const on = c.id === activeCatId ? ' on' : ''
-          const thumb = catThumb(c.id)
-          html += `<button class="cat${on}" type="button" data-cat="${esc(c.id)}">
-            <div class="cat-circle">${
-              thumb ? `<img src="${esc(thumb)}" alt="" />` : esc(c.emoji || '🍽️')
-            }</div>
-            <span class="cat-label">${esc(c.name)}</span>
+        cats.forEach((c) => {
+          const t = thumb(c.id)
+          html += `<button type="button" class="cat${c.id === active ? ' on' : ''}" data-cat="${esc(c.id)}">
+            <div class="circle">${t ? `<img src="${esc(t)}" alt="">` : esc(c.emoji || '🍽️')}</div>
+            <span>${esc(c.name)}</span>
           </button>`
-        }
+        })
         html += '</div>'
 
-        if (featured.length) {
-          html += '<div class="hi-block"><h2 class="section-title">Destaques da casa</h2>'
-          html += '<div class="hi-wrap" id="hiWrap">'
-          for (const item of featured) {
-            html += `<article class="hi" data-item="${esc(item.id)}">
-              <div class="hi-media">${
-                item.imageUrl
-                  ? `<img src="${esc(item.imageUrl)}" alt="" />`
-                  : '🍽️'
-              }</div>
-              <div class="hi-body">
-                <p class="hi-name">${esc(item.name)}</p>
-                ${item.description ? `<p class="hi-desc">${esc(item.description)}</p>` : ''}
-                <p class="hi-price">${money(priceOf(item))}</p>
+        if (feat.length) {
+          html += '<div class="h2">Destaques da casa</div><div class="hi-track" id="hiTrack">'
+          feat.forEach((i) => {
+            html += `<article class="hi" data-id="${esc(i.id)}">
+              <div class="hi-img">${i.imageUrl ? `<img src="${esc(i.imageUrl)}" alt="">` : '🍽️'}</div>
+              <div class="hi-txt">
+                <strong>${esc(i.name)}</strong>
+                ${i.description ? `<em>${esc(i.description)}</em>` : ''}
+                <div class="price">${money(price(i))}</div>
               </div>
             </article>`
-          }
+          })
           html += '</div>'
-          if (featured.length > 1) {
+          if (feat.length > 1) {
             html += '<div class="dots" id="hiDots">'
-            featured.forEach((_, i) => {
-              html += `<button type="button" class="dot${i === 0 ? ' on' : ''}" data-i="${i}" aria-label="Destaque ${i + 1}"></button>`
+            feat.forEach((_, i) => {
+              html += `<button type="button" class="dot${i === 0 ? ' on' : ''}" data-i="${i}"></button>`
             })
             html += '</div>'
           }
-          html += '</div>'
         }
       }
 
-      for (const sec of secs) {
-        html += `<section class="topic" id="sec-${esc(sec.id)}">
-          <div class="topic-head">
-            <span>${esc(sec.emoji || '🍽️')}</span>
-            <h2>${esc(sec.name)}</h2>
-          </div>`
-        for (const item of sec.items) {
-          html += `<button type="button" class="row" data-item="${esc(item.id)}">
-            <div class="thumb">${
-              item.imageUrl
-                ? `<img src="${esc(item.imageUrl)}" alt="" />`
-                : esc(sec.emoji || '🍽️')
-            }</div>
-            <div class="row-body">
-              <p class="row-name">${esc(item.name)}</p>
-              <p class="row-desc ${item.description ? '' : 'muted'}">${
-                esc(item.description || 'Sem descrição cadastrada')
-              }</p>
-              <p class="row-price">${money(priceOf(item))}</p>
+      secs.forEach((s) => {
+        html += `<section class="sec" id="sec-${esc(s.id)}">
+          <div class="sec-h"><span>${esc(s.emoji || '🍽️')}</span>${esc(s.name)}</div>`
+        s.items.forEach((i) => {
+          html += `<button type="button" class="row" data-id="${esc(i.id)}">
+            <div class="thumb">${i.imageUrl ? `<img src="${esc(i.imageUrl)}" alt="">` : esc(s.emoji || '🍽️')}</div>
+            <div class="body">
+              <b>${esc(i.name)}</b>
+              <small>${esc(i.description || 'Sem descrição cadastrada')}</small>
+              <div class="price">${money(price(i))}</div>
             </div>
           </button>`
-        }
+        })
         html += '</section>'
-      }
-
-      el.content.innerHTML = html
-      el.content.querySelectorAll('[data-cat]').forEach((btn) => {
-        btn.addEventListener('click', () => scrollToCat(btn.getAttribute('data-cat')))
       })
-      el.content.querySelectorAll('[data-item]').forEach((node) => {
-        node.addEventListener('click', () => {
-          const wrap = document.getElementById('hiWrap')
-          if (wrap && node.classList.contains('hi') && wrap.dataset.moved === '1') {
-            wrap.dataset.moved = '0'
+
+      root.innerHTML = html
+      root.querySelectorAll('[data-cat]').forEach((b) => b.onclick = () => goCat(b.dataset.cat))
+      root.querySelectorAll('[data-id]').forEach((b) => {
+        b.onclick = () => {
+          const track = $('hiTrack')
+          if (track && b.classList.contains('hi') && track.dataset.moved === '1') {
+            track.dataset.moved = '0'
             return
           }
-          openItem(node.getAttribute('data-item'))
-        })
+          open(b.dataset.id)
+        }
       })
-
-      if (!q && featured.length) {
-        hiIndex = 0
-        bindHiCarousel(featured.length)
-      }
+      if (!q && feat.length) { hiI = 0; bindHi(feat.length) }
     }
 
-    async function load() {
-      try {
-        const res = await fetch(`${API_BASE}/api/avod/public-menu`)
-        if (!res.ok) throw new Error('menu')
-        const data = await res.json()
-        categories = data.categories || []
+    fetch(API + '/api/avod/public-menu')
+      .then((r) => { if (!r.ok) throw new Error('fail'); return r.json() })
+      .then((data) => {
+        cats = data.categories || []
         items = (data.items || []).filter((i) => i.active !== false)
-        items.forEach((i) => {
-          byId[i.id] = i
-        })
-        highlights = data.highlights?.length
+        items.forEach((i) => { map[i.id] = i })
+        highlights = (data.highlights && data.highlights.length)
           ? data.highlights
           : items.filter((i) => i.highlight).slice(0, 6)
-        highlights.forEach((i) => {
-          byId[i.id] = i
-        })
-        el.storeName.textContent =
-          data.company?.nomeFantasia || 'Pedaço Paulista'
-        activeCatId = categories[0]?.id || null
-        document.title = `Cardápio · ${el.storeName.textContent}`
-        render()
-      } catch (e) {
-        el.content.innerHTML =
-          '<p class="empty">Não foi possível carregar o cardápio. Tente de novo em instantes.</p>'
-      }
-    }
-
-    load()
+        highlights.forEach((i) => { map[i.id] = i })
+        $('storeName').textContent = (data.company && data.company.nomeFantasia) || 'Pedaço Paulista'
+        document.title = 'Cardápio · ' + $('storeName').textContent
+        active = cats[0] ? cats[0].id : null
+        draw()
+      })
+      .catch(() => {
+        $('root').innerHTML = '<p class="empty">Não foi possível carregar o cardápio.</p>'
+      })
   </script>
 </body>
 </html>
