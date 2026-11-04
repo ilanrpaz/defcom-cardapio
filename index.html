@@ -40,28 +40,29 @@
       color: #fff;
     }
     .top img {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
       object-fit: cover;
+      border: 1.5px solid #fff;
       background: #fff;
     }
     .top h1 {
       margin: 0;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       line-height: 1.2;
     }
     .top p {
-      margin: 2px 0 0;
-      font-size: 12px;
-      opacity: 0.85;
+      margin: 1px 0 0;
+      font-size: 11px;
+      opacity: 0.75;
       font-weight: 600;
     }
     .top-grow { flex: 1; min-width: 0; }
     .search-btn {
       border: 0;
-      background: rgba(255,255,255,0.12);
+      background: transparent;
       color: #fff;
       width: 40px;
       height: 40px;
@@ -72,29 +73,30 @@
     main {
       max-width: 720px;
       margin: 0 auto;
-      padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
+      padding: 12px 16px calc(24px + env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
     .badge {
-      display: inline-block;
+      align-self: flex-start;
       background: var(--reservado-soft);
       color: var(--reservado);
       font-size: 11px;
       font-weight: 800;
       padding: 5px 10px;
       border-radius: 999px;
-      margin-bottom: 12px;
     }
     .search {
-      display: none;
+      display: flex;
       align-items: center;
       gap: 8px;
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 10px 12px;
-      margin-bottom: 14px;
+      border-radius: 999px;
+      padding: 10px 14px;
     }
-    .search.on { display: flex; }
+    .search.hidden { display: none; }
     .search input {
       flex: 1;
       border: 0;
@@ -103,14 +105,15 @@
       font-weight: 600;
       color: var(--ink);
       background: transparent;
+      min-width: 0;
     }
     .cats {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 8px;
+      padding: 4px 0;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
     .cats::-webkit-scrollbar { display: none; }
     .cat {
@@ -124,121 +127,203 @@
       color: inherit;
     }
     .cat-circle {
-      width: 56px;
-      height: 56px;
+      width: 64px;
+      height: 64px;
       margin: 0 auto 6px;
-      border-radius: 999px;
+      border-radius: 32px;
       background: var(--brand-soft);
-      display: grid;
-      place-items: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
       border: 2px solid transparent;
-      font-size: 22px;
+      font-size: 28px;
     }
     .cat.on .cat-circle { border-color: var(--brand); }
-    .cat img { width: 100%; height: 100%; object-fit: cover; }
-    .cat span {
+    .cat img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cat-label {
       display: block;
       font-size: 11px;
       font-weight: 700;
       color: var(--ink-soft);
+      text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .cat.on span { color: var(--brand-deep); }
+    .cat.on .cat-label { color: var(--brand-deep); }
     .section-title {
-      font-size: 18px;
+      margin: 0;
+      font-size: 17px;
       font-weight: 800;
-      margin: 18px 0 10px;
+      color: var(--ink);
     }
+    .hi-block { display: flex; flex-direction: column; gap: 10px; }
     .hi-wrap {
       display: flex;
       gap: 12px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
-      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+      cursor: grab;
     }
+    .hi-wrap.dragging { cursor: grabbing; }
     .hi-wrap::-webkit-scrollbar { display: none; }
     .hi {
-      flex: 0 0 calc(100% - 8px);
+      flex: 0 0 calc(100% - 4px);
       scroll-snap-align: start;
       background: var(--surface);
-      border-radius: 18px;
+      border-radius: 16px;
       overflow: hidden;
       border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
     }
     .hi-media {
-      height: 160px;
-      background: var(--brand-soft);
-      display: grid;
-      place-items: center;
+      width: 100%;
+      height: 200px;
+      background: #E8EEEA;
+      overflow: hidden;
+      flex: 0 0 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 48px;
+      pointer-events: none;
     }
-    .hi-media img { width: 100%; height: 100%; object-fit: cover; }
-    .hi-body { padding: 12px 14px 14px; }
-    .hi-name { font-weight: 800; font-size: 16px; margin: 0 0 4px; }
-    .hi-desc {
-      margin: 0 0 8px;
-      color: var(--ink-soft);
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.35;
+    .hi-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-    .price {
-      color: var(--brand-deep);
+    .hi-body {
+      background: var(--surface);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hi-name {
+      margin: 0;
+      font-size: 18px;
       font-weight: 800;
-      font-size: 15px;
+      color: var(--ink);
     }
-    .topic { margin-top: 22px; }
+    .hi-desc {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 19px;
+      font-weight: 500;
+    }
+    .hi-price {
+      margin: 2px 0 0;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--brand-deep);
+    }
+    .dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 4px;
+      border: 0;
+      padding: 0;
+      background: var(--line);
+      cursor: pointer;
+    }
+    .dot.on {
+      background: var(--brand);
+      width: 16px;
+    }
+    .topic {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
     .topic-head {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 10px;
+      padding-top: 6px;
+      border-top: 1px solid var(--line);
     }
     .topic-head h2 {
       margin: 0;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 800;
+      color: var(--ink);
     }
     .row {
       display: flex;
       gap: 12px;
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 10px;
-      margin-bottom: 10px;
+      border-radius: 14px;
+      padding: 12px;
     }
     .thumb {
-      width: 72px;
-      height: 72px;
+      width: 84px;
+      height: 84px;
       border-radius: 12px;
-      background: var(--brand-soft);
-      display: grid;
-      place-items: center;
+      background: #E8EEEA;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
-      flex: 0 0 auto;
+      flex: 0 0 84px;
       font-size: 26px;
     }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .row-body { min-width: 0; flex: 1; }
-    .row-name { margin: 0 0 4px; font-weight: 800; font-size: 15px; }
-    .row-desc {
-      margin: 0 0 8px;
-      color: var(--ink-soft);
-      font-size: 12px;
-      font-weight: 600;
-      line-height: 1.35;
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-    .muted { opacity: 0.7; }
+    .row-body {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      justify-content: center;
+    }
+    .row-name {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .row-desc {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 18px;
+      font-weight: 500;
+    }
+    .row-desc.muted { font-size: 12px; font-style: italic; }
+    .row-price {
+      margin: 2px 0 0;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--brand-deep);
+    }
     .empty, .loading {
       text-align: center;
       color: var(--ink-soft);
       font-weight: 600;
       padding: 40px 12px;
+      line-height: 20px;
     }
   </style>
 </head>
@@ -247,7 +332,7 @@
     <img src="./assets/logo-pedaco-circle.png" alt="Logo" />
     <div class="top-grow">
       <h1 id="storeName">Pedaço Paulista</h1>
-      <p>Cardápio online</p>
+      <p>Restaurante · cardápio essencial</p>
     </div>
     <button class="search-btn" id="toggleSearch" type="button" aria-label="Buscar">⌕</button>
   </header>
@@ -266,6 +351,12 @@
       Number(n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     const priceOf = (item) =>
       item.promo && item.promoPrice != null ? item.promoPrice : item.price
+    const esc = (s) =>
+      String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
 
     const el = {
       content: document.getElementById('content'),
@@ -279,10 +370,13 @@
     let items = []
     let highlights = []
     let activeCatId = null
+    let hiIndex = 0
+    let hiTimer = null
+    let hiPaused = false
 
     el.toggleSearch.addEventListener('click', () => {
-      el.searchBox.classList.toggle('on')
-      if (el.searchBox.classList.contains('on')) el.q.focus()
+      el.searchBox.classList.toggle('hidden')
+      if (!el.searchBox.classList.contains('hidden')) el.q.focus()
     })
     el.q.addEventListener('input', () => render())
 
@@ -316,6 +410,118 @@
       })
     }
 
+    function goHi(index, animated = true) {
+      const wrap = document.getElementById('hiWrap')
+      if (!wrap) return
+      const cards = wrap.querySelectorAll('.hi')
+      if (!cards.length) return
+      const n = cards.length
+      const next = ((index % n) + n) % n
+      hiIndex = next
+      const gap = 12
+      const x = cards[next].offsetLeft
+      wrap.scrollTo({ left: x, behavior: animated ? 'smooth' : 'auto' })
+      wrap.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('on', i === next)
+      })
+      // dots are outside wrap — update separately
+      document.querySelectorAll('#hiDots .dot').forEach((d, i) => {
+        d.classList.toggle('on', i === next)
+      })
+    }
+
+    function bindHiCarousel(count) {
+      const wrap = document.getElementById('hiWrap')
+      const dots = document.getElementById('hiDots')
+      if (!wrap) return
+
+      if (hiTimer) {
+        clearInterval(hiTimer)
+        hiTimer = null
+      }
+
+      // drag com mouse (desktop) + touch nativo
+      let down = false
+      let startX = 0
+      let startLeft = 0
+      wrap.addEventListener('pointerdown', (e) => {
+        down = true
+        hiPaused = true
+        startX = e.clientX
+        startLeft = wrap.scrollLeft
+        wrap.classList.add('dragging')
+        wrap.setPointerCapture(e.pointerId)
+      })
+      wrap.addEventListener('pointermove', (e) => {
+        if (!down) return
+        wrap.scrollLeft = startLeft - (e.clientX - startX)
+      })
+      const endDrag = (e) => {
+        if (!down) return
+        down = false
+        wrap.classList.remove('dragging')
+        hiPaused = false
+        // snap para o card mais próximo
+        const cards = [...wrap.querySelectorAll('.hi')]
+        if (!cards.length) return
+        let best = 0
+        let bestDist = Infinity
+        cards.forEach((card, i) => {
+          const dist = Math.abs(card.offsetLeft - wrap.scrollLeft)
+          if (dist < bestDist) {
+            bestDist = dist
+            best = i
+          }
+        })
+        goHi(best)
+      }
+      wrap.addEventListener('pointerup', endDrag)
+      wrap.addEventListener('pointercancel', endDrag)
+
+      wrap.addEventListener(
+        'scroll',
+        () => {
+          const cards = [...wrap.querySelectorAll('.hi')]
+          if (!cards.length) return
+          let best = 0
+          let bestDist = Infinity
+          cards.forEach((card, i) => {
+            const dist = Math.abs(card.offsetLeft - wrap.scrollLeft)
+            if (dist < bestDist) {
+              bestDist = dist
+              best = i
+            }
+          })
+          if (best !== hiIndex) {
+            hiIndex = best
+            document.querySelectorAll('#hiDots .dot').forEach((d, i) => {
+              d.classList.toggle('on', i === best)
+            })
+          }
+        },
+        { passive: true },
+      )
+
+      if (dots) {
+        dots.querySelectorAll('.dot').forEach((d) => {
+          d.addEventListener('click', () => {
+            hiPaused = true
+            goHi(Number(d.getAttribute('data-i')))
+            setTimeout(() => {
+              hiPaused = false
+            }, 500)
+          })
+        })
+      }
+
+      if (count > 1) {
+        hiTimer = setInterval(() => {
+          if (hiPaused) return
+          goHi(hiIndex + 1)
+        }, 3800)
+      }
+    }
+
     function render() {
       if (!items.length) {
         el.content.innerHTML =
@@ -328,7 +534,6 @@
         ? highlights
         : items.filter((i) => i.highlight).slice(0, 6)
       const secs = sections()
-
       let html = ''
 
       if (!q) {
@@ -336,62 +541,67 @@
         for (const c of categories) {
           const on = c.id === activeCatId ? ' on' : ''
           const thumb = catThumb(c.id)
-          html += `<button class="cat${on}" type="button" data-cat="${c.id}">
+          html += `<button class="cat${on}" type="button" data-cat="${esc(c.id)}">
             <div class="cat-circle">${
               thumb
-                ? `<img src="${thumb}" alt="" />`
-                : `<span>${c.emoji || '🍽️'}</span>`
+                ? `<img src="${esc(thumb)}" alt="" />`
+                : esc(c.emoji || '🍽️')
             }</div>
-            <span>${c.name}</span>
+            <span class="cat-label">${esc(c.name)}</span>
           </button>`
         }
         html += '</div>'
 
         if (featured.length) {
-          html += '<div class="section-title">Destaques da casa</div><div class="hi-wrap">'
+          html += '<div class="hi-block"><h2 class="section-title">Destaques da casa</h2>'
+          html += '<div class="hi-wrap" id="hiWrap">'
           for (const item of featured) {
             html += `<article class="hi">
               <div class="hi-media">${
                 item.imageUrl
-                  ? `<img src="${item.imageUrl}" alt="" />`
+                  ? `<img src="${esc(item.imageUrl)}" alt="" />`
                   : '🍽️'
               }</div>
               <div class="hi-body">
-                <p class="hi-name">${item.name}</p>
-                ${item.description ? `<p class="hi-desc">${item.description}</p>` : ''}
-                <div class="price">${money(priceOf(item))}</div>
+                <p class="hi-name">${esc(item.name)}</p>
+                ${item.description ? `<p class="hi-desc">${esc(item.description)}</p>` : ''}
+                <p class="hi-price">${money(priceOf(item))}</p>
               </div>
             </article>`
+          }
+          html += '</div>'
+          if (featured.length > 1) {
+            html += '<div class="dots" id="hiDots">'
+            featured.forEach((_, i) => {
+              html += `<button type="button" class="dot${i === 0 ? ' on' : ''}" data-i="${i}" aria-label="Destaque ${i + 1}"></button>`
+            })
+            html += '</div>'
           }
           html += '</div>'
         }
       }
 
       for (const sec of secs) {
-        html += `<section class="topic" id="sec-${sec.id}">
+        html += `<section class="topic" id="sec-${esc(sec.id)}">
           <div class="topic-head">
-            <span>${sec.emoji || '🍽️'}</span>
-            <h2>${sec.name}</h2>
+            <span>${esc(sec.emoji || '🍽️')}</span>
+            <h2>${esc(sec.name)}</h2>
           </div>`
-        if (!sec.items.length) {
-          html += '<p class="empty">Nenhum item.</p>'
-        } else {
-          for (const item of sec.items) {
-            html += `<article class="row">
-              <div class="thumb">${
-                item.imageUrl
-                  ? `<img src="${item.imageUrl}" alt="" />`
-                  : sec.emoji || '🍽️'
-              }</div>
-              <div class="row-body">
-                <p class="row-name">${item.name}</p>
-                <p class="row-desc ${item.description ? '' : 'muted'}">${
-                  item.description || 'Sem descrição cadastrada'
-                }</p>
-                <div class="price">${money(priceOf(item))}</div>
-              </div>
-            </article>`
-          }
+        for (const item of sec.items) {
+          html += `<article class="row">
+            <div class="thumb">${
+              item.imageUrl
+                ? `<img src="${esc(item.imageUrl)}" alt="" />`
+                : esc(sec.emoji || '🍽️')
+            }</div>
+            <div class="row-body">
+              <p class="row-name">${esc(item.name)}</p>
+              <p class="row-desc ${item.description ? '' : 'muted'}">${
+                esc(item.description || 'Sem descrição cadastrada')
+              }</p>
+              <p class="row-price">${money(priceOf(item))}</p>
+            </div>
+          </article>`
         }
         html += '</section>'
       }
@@ -400,20 +610,31 @@
       el.content.querySelectorAll('[data-cat]').forEach((btn) => {
         btn.addEventListener('click', () => scrollToCat(btn.getAttribute('data-cat')))
       })
+
+      if (!q && featured.length) {
+        hiIndex = 0
+        bindHiCarousel(featured.length)
+      }
     }
 
     async function load() {
       try {
-        const res = await fetch('https://defcom-production.up.railway.app/api/avod/public-menu')
+        const apiBase =
+          location.protocol === 'file:' ||
+          !/^https?:/i.test(location.protocol) ||
+          location.origin.includes('github.io')
+            ? 'https://defcom-production.up.railway.app'
+            : location.origin
+        const res = await fetch(`${apiBase}/api/avod/public-menu`)
         if (!res.ok) throw new Error('menu')
         const data = await res.json()
         categories = data.categories || []
         items = (data.items || []).filter((i) => i.active !== false)
-        highlights = (data.highlights && data.highlights.length)
+        highlights = data.highlights?.length
           ? data.highlights
           : items.filter((i) => i.highlight).slice(0, 6)
         el.storeName.textContent =
-          (data.company && data.company.nomeFantasia) || 'Pedaço Paulista'
+          data.company?.nomeFantasia || 'Pedaço Paulista'
         activeCatId = categories[0]?.id || null
         document.title = `Cardápio · ${el.storeName.textContent}`
         render()
