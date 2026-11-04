@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- defcom-cardapio-essencial -->
+  <title>Cardápio · Pedaço Paulista</title>
+  <link rel="icon" href="./assets/logo-pedaco-circle.png" />
+  <style>
+    :root {
+      --brand: #1B7A4A;
+      --brand-deep: #145C38;
+      --brand-soft: #E6F4EE;
+      --ink: #15201C;
+      --ink-soft: #4D5C56;
+      --line: #D8E3DD;
+      --surface: #FFFFFF;
+      --bg: #F2F5F3;
+      --reservado: #E8A317;
+      --reservado-soft: #FFE8B0;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      padding-top: max(12px, env(safe-area-inset-top));
+      background: var(--brand-deep);
+      color: #fff;
+    }
+    .top img {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      object-fit: cover;
+      background: #fff;
+    }
+    .top h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .top p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      opacity: 0.85;
+      font-weight: 600;
+    }
+    .top-grow { flex: 1; min-width: 0; }
+    .search-btn {
+      border: 0;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
+    }
+    .badge {
+      display: inline-block;
+      background: var(--reservado-soft);
+      color: var(--reservado);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .search {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+    .search.on { display: flex; }
+    .search input {
+      flex: 1;
+      border: 0;
+      outline: none;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      background: transparent;
+    }
+    .cats {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      scrollbar-width: none;
+    }
+    .cats::-webkit-scrollbar { display: none; }
+    .cat {
+      flex: 0 0 auto;
+      width: 72px;
+      text-align: center;
+      cursor: pointer;
+      background: none;
+      border: 0;
+      padding: 0;
+      color: inherit;
+    }
+    .cat-circle {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 6px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 2px solid transparent;
+      font-size: 22px;
+    }
+    .cat.on .cat-circle { border-color: var(--brand); }
+    .cat img { width: 100%; height: 100%; object-fit: cover; }
+    .cat span {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cat.on span { color: var(--brand-deep); }
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 18px 0 10px;
+    }
+    .hi-wrap {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+    .hi-wrap::-webkit-scrollbar { display: none; }
+    .hi {
+      flex: 0 0 calc(100% - 8px);
+      scroll-snap-align: start;
+      background: var(--surface);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .hi-media {
+      height: 160px;
+      background: var(--brand-soft);
+      display: grid;
+      place-items: center;
+      font-size: 48px;
+    }
+    .hi-media img { width: 100%; height: 100%; object-fit: cover; }
+    .hi-body { padding: 12px 14px 14px; }
+    .hi-name { font-weight: 800; font-size: 16px; margin: 0 0 4px; }
+    .hi-desc {
+      margin: 0 0 8px;
+      color: var(--ink-soft);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .price {
+      color: var(--brand-deep);
+      font-weight: 800;
+      font-size: 15px;
+    }
+    .topic { margin-top: 22px; }
+    .topic-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .topic-head h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .row {
+      display: flex;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      background: var(--brand-soft);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      flex: 0 0 auto;
+      font-size: 26px;
+    }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .row-body { min-width: 0; flex: 1; }
+    .row-name { margin: 0 0 4px; font-weight: 800; font-size: 15px; }
+    .row-desc {
+      margin: 0 0 8px;
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .muted { opacity: 0.7; }
+    .empty, .loading {
+      text-align: center;
+      color: var(--ink-soft);
+      font-weight: 600;
+      padding: 40px 12px;
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <img src="./assets/logo-pedaco-circle.png" alt="Logo" />
+    <div class="top-grow">
+      <h1 id="storeName">Pedaço Paulista</h1>
+      <p>Cardápio online</p>
+    </div>
+    <button class="search-btn" id="toggleSearch" type="button" aria-label="Buscar">⌕</button>
+  </header>
+
+  <main>
+    <div class="badge">CARDÁPIO ESSENCIAL</div>
+    <div class="search" id="searchBox">
+      <span aria-hidden="true">⌕</span>
+      <input id="q" type="search" placeholder="Buscar pratos, bebidas..." autocomplete="off" />
+    </div>
+    <div id="content" class="loading">Carregando cardápio…</div>
+  </main>
+
+  <script>
+    const money = (n) =>
+      Number(n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    const priceOf = (item) =>
+      item.promo && item.promoPrice != null ? item.promoPrice : item.price
+
+    const el = {
+      content: document.getElementById('content'),
+      storeName: document.getElementById('storeName'),
+      searchBox: document.getElementById('searchBox'),
+      q: document.getElementById('q'),
+      toggleSearch: document.getElementById('toggleSearch'),
+    }
+
+    let categories = []
+    let items = []
+    let highlights = []
+    let activeCatId = null
+
+    el.toggleSearch.addEventListener('click', () => {
+      el.searchBox.classList.toggle('on')
+      if (el.searchBox.classList.contains('on')) el.q.focus()
+    })
+    el.q.addEventListener('input', () => render())
+
+    function catThumb(catId) {
+      const first = items.find((i) => i.categoryId === catId && i.imageUrl)
+      return first?.imageUrl || null
+    }
+
+    function sections() {
+      const q = el.q.value.trim().toLowerCase()
+      if (q) {
+        const matched = items.filter(
+          (i) =>
+            i.name.toLowerCase().includes(q) ||
+            String(i.description || '').toLowerCase().includes(q),
+        )
+        return [{ id: 'busca', name: `Resultados · “${el.q.value.trim()}”`, emoji: '🔎', items: matched }]
+      }
+      return categories
+        .map((c) => ({ ...c, items: items.filter((i) => i.categoryId === c.id) }))
+        .filter((s) => s.items.length > 0)
+    }
+
+    function scrollToCat(id) {
+      activeCatId = id
+      el.q.value = ''
+      render()
+      requestAnimationFrame(() => {
+        const node = document.getElementById('sec-' + id)
+        if (node) node.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
+
+    function render() {
+      if (!items.length) {
+        el.content.innerHTML =
+          '<p class="empty">Nenhum item no cardápio ainda.</p>'
+        return
+      }
+
+      const q = el.q.value.trim()
+      const featured = highlights.length
+        ? highlights
+        : items.filter((i) => i.highlight).slice(0, 6)
+      const secs = sections()
+
+      let html = ''
+
+      if (!q) {
+        html += '<div class="cats">'
+        for (const c of categories) {
+          const on = c.id === activeCatId ? ' on' : ''
+          const thumb = catThumb(c.id)
+          html += `<button class="cat${on}" type="button" data-cat="${c.id}">
+            <div class="cat-circle">${
+              thumb
+                ? `<img src="${thumb}" alt="" />`
+                : `<span>${c.emoji || '🍽️'}</span>`
+            }</div>
+            <span>${c.name}</span>
+          </button>`
+        }
+        html += '</div>'
+
+        if (featured.length) {
+          html += '<div class="section-title">Destaques da casa</div><div class="hi-wrap">'
+          for (const item of featured) {
+            html += `<article class="hi">
+              <div class="hi-media">${
+                item.imageUrl
+                  ? `<img src="${item.imageUrl}" alt="" />`
+                  : '🍽️'
+              }</div>
+              <div class="hi-body">
+                <p class="hi-name">${item.name}</p>
+                ${item.description ? `<p class="hi-desc">${item.description}</p>` : ''}
+                <div class="price">${money(priceOf(item))}</div>
+              </div>
+            </article>`
+          }
+          html += '</div>'
+        }
+      }
+
+      for (const sec of secs) {
+        html += `<section class="topic" id="sec-${sec.id}">
+          <div class="topic-head">
+            <span>${sec.emoji || '🍽️'}</span>
+            <h2>${sec.name}</h2>
+          </div>`
+        if (!sec.items.length) {
+          html += '<p class="empty">Nenhum item.</p>'
+        } else {
+          for (const item of sec.items) {
+            html += `<article class="row">
+              <div class="thumb">${
+                item.imageUrl
+                  ? `<img src="${item.imageUrl}" alt="" />`
+                  : sec.emoji || '🍽️'
+              }</div>
+              <div class="row-body">
+                <p class="row-name">${item.name}</p>
+                <p class="row-desc ${item.description ? '' : 'muted'}">${
+                  item.description || 'Sem descrição cadastrada'
+                }</p>
+                <div class="price">${money(priceOf(item))}</div>
+              </div>
+            </article>`
+          }
+        }
+        html += '</section>'
+      }
+
+      el.content.innerHTML = html
+      el.content.querySelectorAll('[data-cat]').forEach((btn) => {
+        btn.addEventListener('click', () => scrollToCat(btn.getAttribute('data-cat')))
+      })
+    }
+
+    async function load() {
+      try {
+        const res = await fetch('https://defcom-production.up.railway.app/api/avod/public-menu')
+        if (!res.ok) throw new Error('menu')
+        const data = await res.json()
+        categories = data.categories || []
+        items = (data.items || []).filter((i) => i.active !== false)
+        highlights = (data.highlights && data.highlights.length)
+          ? data.highlights
+          : items.filter((i) => i.highlight).slice(0, 6)
+        el.storeName.textContent =
+          (data.company && data.company.nomeFantasia) || 'Pedaço Paulista'
+        activeCatId = categories[0]?.id || null
+        document.title = `Cardápio · ${el.storeName.textContent}`
+        render()
+      } catch (e) {
+        el.content.innerHTML =
+          '<p class="empty">Não foi possível carregar o cardápio. Tente de novo em instantes.</p>'
+      }
+    }
+
+    load()
+  </script>
+</body>
+</html>
